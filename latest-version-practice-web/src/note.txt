@@ -1,0 +1,38 @@
+// test1 =()=>{
+//     this.setState(state=>({count:state.count+1}))
+// }//在原有的count上加一
+// //完整写法是（（state，props）=》xxxxxx）因为跟props无关所以可以省略
+
+// test2 =()=>{
+//     const count = this.state.count+1
+//     this.setstate({count})
+// }
+
+// test3 =()=>{
+//     this.setState(state=>({count:state.count+1})),()=>{
+//         console.log(this.state.count)
+//         //此方式会在状态更新且界面更新后调用，所以此时console出来count为2，前两个方法为1
+//     }
+// }
+// //建议，如果新状态不依赖原状态==》对象方式
+// //如果新状态依赖原状态==》函数方式
+
+// setstate在react相关回调（生命周期）react事件监听回调 就是异步
+// 如果在其他异步回调中就是同步，settimeout定时器，dom监听，promise回调 //同步
+// 写两次
+// 在异步的setstate中，用对象的模式写会合并更新一次状态，即count为2 -----状态更新和界面更新合并
+// 用函数的方式去写，更新多次撞塌， -----状态更新没有合并，界面更新合并
+// 因为函数的模式，内部更新的每次回调会获取最新的state和props值
+
+
+
+
+
+
+// component组件
+// 父组件重新render，其render中的子组件也会从小render，即使子组件没有变化
+// 当前（子）组件setstate，会重新render，即使state无变化
+
+// 以上问题的解决方法是
+// 1 使用shouldcomponentupdate 生命周期去重写，因为默认为true 就更新，
+// 2 使用purecomponent， 它会重写实现shouldcomponentupdate（） 对新旧state和props浅比较，没变化返回false
